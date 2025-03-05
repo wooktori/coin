@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
 import { useQuery } from "@tanstack/react-query";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 const Container = styled.div`
   max-width: 480px;
@@ -33,6 +34,7 @@ const Coin = styled.li`
   }
 `;
 const Title = styled.h1`
+  font-size: 48px;
   color: ${(props) => props.theme.accentColor};
 `;
 const Loader = styled.span`
@@ -63,6 +65,11 @@ export default function Coins() {
 
   return (
     <Container>
+      <HelmetProvider>
+        <Helmet>
+          <title>코인</title>
+        </Helmet>
+      </HelmetProvider>
       <Header>
         <Title>코인</Title>
       </Header>
