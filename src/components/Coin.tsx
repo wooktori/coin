@@ -1,5 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link, Outlet, useLocation, useMatch, useParams } from "react-router";
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useMatch,
+  useOutletContext,
+  useParams,
+} from "react-router";
 import styled from "styled-components";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
 import { Helmet, HelmetProvider } from "react-helmet-async";
@@ -30,7 +37,7 @@ const Header = styled.header`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.cardBgColor};
   padding: 10px 20px;
   border-radius: 10px;
 `;
@@ -63,7 +70,7 @@ const Tab = styled.span<{ $isActive: boolean }>`
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.cardBgColor};
   padding: 7px 0px;
   border-radius: 10px;
   color: ${(props) =>
@@ -129,7 +136,12 @@ interface PriceData {
   };
 }
 
+interface ITheme {
+  isDark: boolean;
+}
+
 function Coin() {
+  const { isDark } = useOutletContext<ITheme>();
   const { coinId } = useParams();
   const { state } = useLocation();
   const priceMatch = useMatch("/:coinId/price");
@@ -197,7 +209,7 @@ function Coin() {
               <Link to={`/${coinId}/price`}>Price</Link>
             </Tab>
           </Tabs>
-          <Outlet context={{ coinId }} />
+          <Outlet context={{ coinId, isDark }} />
         </>
       )}
     </Container>
